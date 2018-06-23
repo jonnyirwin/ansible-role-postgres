@@ -1,0 +1,19 @@
+---
+- name: Ensure Postgres repository signing key is present
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Add PGDG repository to sources
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main
+    state: present
+    filename: pgdg
+
+- name: Ensure PostgreSQL package is installed
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items:
+    - postgresql-{{ postgresql_major_version }}
