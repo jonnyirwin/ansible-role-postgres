@@ -16,4 +16,9 @@
     update_cache: yes
     state: present
   with_items:
-    - postgresql-{{ postgresql_major_version }}
+    - postgresql-{{ pg_major_version }}
+    - python3-psycopg2
+
+- name: Run tasks specific to {{ pg_node_type }} node
+  include_tasks: "{{ pg_node_type }}.yml"
+  when: pg_setup_replication

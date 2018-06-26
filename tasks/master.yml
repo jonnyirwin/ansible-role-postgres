@@ -1,0 +1,16 @@
+---
+- name: Ensure replication role exists
+  postgresql_user:
+    encrypted: yes
+    name: "{{ pg_rep_role_name }}"
+    role_attr_flags: LOGIN,REPLICATION
+    state: present        
+  become: true
+  become_user: postgres
+      
+- name: Allow replication user access in PGHBA
+  blockinfile:
+    path: "{{ pg_conf_dir }}/pg_hba.conf"
+    block: |
+      # Replication
+      host    replication       {{ pg_rep_role_name }}          192.168.53.22   trust    

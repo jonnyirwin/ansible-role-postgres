@@ -1,2 +1,17 @@
 ---
-# handlers file for .
+- name: restart postgres
+  systemd:
+    name: postgresql
+    daemon_reload: yes
+    state: restarted
+
+- name: stop postgres
+  systemd:
+    name: postgresql
+    state: stopped
+
+- name: startpostgres
+  systemd:
+    name: postgresql
+    daemon_reload: yes
+    state: started

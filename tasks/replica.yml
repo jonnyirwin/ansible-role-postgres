@@ -1,0 +1,21 @@
+---
+- name: Stop postgres
+  systemd:
+    name: postgresql
+    state: stopped    
+
+- name: Delete existing PGDATA folder
+  file: 
+    path: "{{ pg_data_dir }}/" 
+    state: absent
+
+- name: Create empty PGDATA folder
+  file:
+    path: "{{ pg_data_dir }}"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: u+rwx    
+
+- name: Backup from master to Replica
+  shell: "pg_basebackup -h 192.168.53.21 -U {{ pg_rep_role_name }} -R -D {{ pg_data_dir }}/"  
