@@ -18,4 +18,6 @@
     mode: u+rwx    
 
 - name: Backup from master to Replica
-  shell: "pg_basebackup -h 192.168.53.21 -U {{ pg_rep_role_name }} -R -D {{ pg_data_dir }}/"  
+  shell: "pg_basebackup -h 192.168.53.21 -U {{ pg_rep_role_name }} -R -D {{ pg_data_dir }}" 
+  become: yes
+  become_user: postgres
