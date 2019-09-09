@@ -9,15 +9,29 @@
   become_user: postgres
       
 - name: Allow replication user access in pg_hba.conf
-  blockinfile:
-    path: "{{ pg_conf_dir }}/pg_hba.conf"
-    block: |
-      # Replication
-      host    replication     {{ pg_rep_role_name }}      192.168.53.22/32   trust    
+  become: true
+  become_user: postgres
+  postgresql_pg_hba:
+    dest: "{{ pg_conf_dir }}/pg_hba.conf"
+    contype: host
+    databases: replication
+    users: "{{ pg_rep_role_name }}"
+    source: 192.168.53.22/32
+    method: trust
 
 - name: postgresql.conf settings
+  become: true
+  become_user: postgres
   blockinfile:
     path: "{{ pg_conf_dir }}/postgresql.conf"
     block: |
       listen_addresses = '*'
   notify: "restart postgres"     
+
+- name: create replication slot
+  become: true
+  become_user: postgres
+  postgresql_slot:
+    name: "{{ replication_slot }}"
+    slot_type: physical
+    state: present

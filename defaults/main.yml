@@ -1,7 +1,8 @@
 ---
-pg_major_version: 10
+pg_major_version: 11
 
 pg_setup_replication: true
 pg_rep_role_name: rep_user
 pg_data_dir: /var/lib/postgresql/{{ pg_major_version }}/main
 pg_conf_dir: /etc/postgresql/{{ pg_major_version }}/main
+replication_slot: replica

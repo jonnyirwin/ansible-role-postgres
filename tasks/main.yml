@@ -12,12 +12,13 @@
 
 - name: Ensure PostgreSQL package is installed
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     update_cache: yes
     state: present
-  with_items:
-    - postgresql-{{ pg_major_version }}
-    - python3-psycopg2
+  vars:
+    packages:
+      - postgresql-{{ pg_major_version }}
+      - python3-psycopg2
 
 - name: Run tasks specific to {{ pg_node_type }} node
   include_tasks: "{{ pg_node_type }}.yml"

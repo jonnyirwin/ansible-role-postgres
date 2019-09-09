@@ -15,9 +15,14 @@
     state: directory
     owner: postgres
     group: postgres
-    mode: u+rwx    
+    mode: 0700    
 
 - name: Backup from master to Replica
-  shell: "pg_basebackup -h 192.168.53.21 -U {{ pg_rep_role_name }} -R -D {{ pg_data_dir }}" 
+  shell: "pg_basebackup -h 192.168.53.21 -U {{ pg_rep_role_name }} -R -D {{ pg_data_dir }} -S {{ replication_slot }}" 
   become: yes
   become_user: postgres
+
+- name: Start postgres
+  systemd:
+    name: postgresql
+    state: started

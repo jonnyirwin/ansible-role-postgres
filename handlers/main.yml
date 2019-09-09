@@ -10,7 +10,7 @@
     name: postgresql
     state: stopped
 
-- name: startpostgres
+- name: start postgres
   systemd:
     name: postgresql
     daemon_reload: yes
